@@ -13,4 +13,5 @@ provider "google" {
 resource "google_storage_bucket" "demo" {
   name     = "thinking-pagoda-501907-e7-demo-bucket-001"
   location = "US"
+  uniform_bucket_level_access=true
 }
