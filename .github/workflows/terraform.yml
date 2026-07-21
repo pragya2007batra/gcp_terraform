@@ -1,48 +1,48 @@
 name: Terraform
 
 on:
- push:
- branches:
- - main
- workflow_dispatch:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 permissions:
- contents: read
- id-token: write
+  contents: read
+  id-token: write
 
 jobs:
- terraform:
- runs-on: ubuntu-latest
+  terraform:
+    runs-on: ubuntu-latest
 
- steps:
- - name: Checkout
- uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
- - name: Authenticate to GCP
- uses: google-github-actions/auth@v3
- with:
- workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
- service_account: ${{ secrets.SERVICE_ACCOUNT }}
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.SERVICE_ACCOUNT }}
 
- - name: Setup GCloud
- uses: google-github-actions/setup-gcloud@v2
+      - name: Setup GCloud
+        uses: google-github-actions/setup-gcloud@v2
 
- - name: Verify Authentication
- run: |
- gcloud auth list
- gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
+      - name: Verify Authentication
+        run: |
+          gcloud auth list
+          gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
- - name: Setup Terraform
- uses: hashicorp/setup-terraform@v3
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
- - name: Terraform Init
- run: terraform init
+      - name: Terraform Init
+        run: terraform init
 
- - name: Terraform Validate
- run: terraform validate
+      - name: Terraform Validate
+        run: terraform validate
 
- - name: Terraform Plan
- run: terraform plan
+      - name: Terraform Plan
+        run: terraform plan
 
- - name: Terraform Apply
- run: terraform apply -auto-approve
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
